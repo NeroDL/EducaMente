@@ -1,0 +1,6 @@
+@EducaMente_HostAddress = http://localhost:5118
+
+GET {{EducaMente_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
