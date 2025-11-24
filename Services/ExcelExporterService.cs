@@ -30,6 +30,18 @@ namespace EducaMente.Services
             return ExportarPerfilesAPdfAsync(perfilesExportables);
         }
 
+        public async Task<FileStreamResult> ExportarPerfilesHistAsync(string usuarioId)
+        {
+            // Obtener todos los perfiles psicológicos de los estudiantes
+            var perfiles = await _usuarioRepos.GetPerfilPsicoHistAsync(usuarioId);
+
+            // Mapear los perfiles al DTO ExportarPerfilesDTO
+            var perfilesExportables = perfiles.Select(p => UtilitiesDTO.MapToExportarHistPerfilDTO(p));
+
+            // Llamar al método para exportar los perfiles a Excel
+            return ExportarPerfilHistAPdfAsync(perfilesExportables);
+        }
+
         private FileStreamResult ExportarPerfilesAPdfAsync(IEnumerable<ExportarPerfilesDTO> perfiles)
         {
             // Crear un nuevo libro de trabajo (Excel)
@@ -76,7 +88,53 @@ namespace EducaMente.Services
             // Devolver el archivo Excel como una descarga
             return new FileStreamResult(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             {
-                FileDownloadName = "PerfilesPsicoEstudiantes.xlsx"
+                FileDownloadName = $"PerfilesPsicoEstudiantes{UtilidadesTiempo.ObtenerFechaColombia():dd/MM/yy HH:mm}.xlsx"
+            };
+        }
+
+        private FileStreamResult ExportarPerfilHistAPdfAsync(IEnumerable<ExportarPerfilesDTO> perfiles)
+        {
+            using var workbook = new XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Perfiles Psicológicos");
+
+            worksheet.Cell(1, 1).Value = "Nombre";
+            worksheet.Cell(1, 2).Value = "Fecha Evaluacion";
+            worksheet.Cell(1, 3).Value = "AnsiedadScore";
+            worksheet.Cell(1, 4).Value = "EstresScore";
+            worksheet.Cell(1, 5).Value = "MotivacionScore";
+            worksheet.Cell(1, 6).Value = "AutoestimaScore";
+            worksheet.Cell(1, 7).Value = "PropositoScore";
+            worksheet.Cell(1, 8).Value = "Nivel de Riesgo";
+            worksheet.Cell(1, 9).Value = "Estado Emocional";
+            worksheet.Cell(1, 10).Value = "Observacion";
+
+            int row = 2;
+            foreach (var perfil in perfiles)
+            {
+                worksheet.Cell(row, 1).Value = perfil.NombreUsuario;
+                worksheet.Cell(row, 2).Value = perfil.FechaEvaluacion;
+                worksheet.Cell(row, 3).Value = perfil.AnsiedadScore;
+                worksheet.Cell(row, 4).Value = perfil.EstresScore;
+                worksheet.Cell(row, 5).Value = perfil.MotivacionScore;
+                worksheet.Cell(row, 6).Value = perfil.AutoestimaScore;
+                worksheet.Cell(row, 7).Value = perfil.PropositoScore;
+                worksheet.Cell(row, 8).Value = perfil.NivelRiesgo;
+                worksheet.Cell(row, 9).Value = perfil.EstadoEmocional;
+                worksheet.Cell(row, 10).Value = perfil.Observacion;
+
+                row++;
+            }
+
+            // Obtener el nombre del estudiante
+            var nombreEstudiante = perfiles.FirstOrDefault()?.NombreUsuario ?? "Estudiante";
+
+            var memoryStream = new MemoryStream();
+            workbook.SaveAs(memoryStream);
+            memoryStream.Seek(0, SeekOrigin.Begin);
+
+            return new FileStreamResult(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            {
+                FileDownloadName = $"PerfilesPsicoHist_{nombreEstudiante}_{UtilidadesTiempo.ObtenerFechaColombia()}.xlsx"
             };
         }
     }

@@ -7,7 +7,6 @@
         public string NombreUsuario { get; set; } = string.Empty;
         public string TestId { get; set; } = string.Empty;
         public string UsuarioTestId { get; set; } = string.Empty;
-        public string CodigoTest { get; set; } = string.Empty;
         public string? DescripcionTest { get; set; }
         public string FechaGeneracion { get; set; } = string.Empty;
         public decimal AnsiedadScore { get; set; }

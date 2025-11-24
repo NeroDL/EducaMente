@@ -280,7 +280,6 @@ namespace EducaMente.Repositories
                         NombreUsuario = reader["NombreUsuario"]?.ToString() ?? string.Empty,
                         TestId = reader["TestId"]?.ToString() ?? string.Empty,
                         UsuarioTestId = reader["UsuarioTestId"]?.ToString() ?? string.Empty,
-                        CodigoTest = reader["CodigoTest"]?.ToString() ?? string.Empty,
                         DescripcionTest = reader["DescripcionTest"] == DBNull.Value ? string.Empty : reader["DescripcionTest"]?.ToString(),
                         FechaGeneracion = reader["FechaGeneracion"] == DBNull.Value ? string.Empty : Convert.ToDateTime(reader["FechaGeneracion"]).ToString("dd/MM/yy hh:mm tt", new CultureInfo("es-CO")),
                         AnsiedadScore = reader["AnsiedadScore"] == DBNull.Value ? 0m : Convert.ToDecimal(reader["AnsiedadScore"]),

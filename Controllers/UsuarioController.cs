@@ -134,7 +134,7 @@ namespace EducaMente.Controllers
                 return NotFound(new ApiErrorResponse
                 {
                     Code = "NOT_FOUND",
-                    Message = "El responsable no tiene alertas de riesgo registradas."
+                    Message = "El responsable no tiene alertas registradas."
                 });
             }
 
@@ -224,6 +224,30 @@ namespace EducaMente.Controllers
             {
                 // Llamar al servicio para exportar los perfiles a Excel
                 return await excelExporterService.ExportarPerfilesAsync();
+            }
+            catch (Exception ex)
+            {
+                // En caso de error, retornar un mensaje de error adecuado
+                return StatusCode(500, new ApiErrorResponse
+                {
+                    Code = "INTERNAL_SERVER_ERROR",
+                    Message = $"Hubo un error al intentar exportar los perfiles: {ex.Message}"
+                });
+            }
+        }
+
+        [HttpGet("ExportarPerfilHist")]
+        [AllowAnonymous]
+        [SwaggerOperation(
+            Summary = "Exportar Historico de perfiles psicológicos de un estudiante a Excel",
+            Description = "Genera un archivo Excel con el historico de perfiles psicológicos del estudiante y lo descarga."
+        )]
+        public async Task<ActionResult> ExportarPerfilHistAsync(string usuarioId)
+        {
+            try
+            {
+                // Llamar al servicio para exportar los perfiles a Excel
+                return await excelExporterService.ExportarPerfilesHistAsync(usuarioId);
             }
             catch (Exception ex)
             {

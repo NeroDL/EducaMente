@@ -21,5 +21,24 @@ namespace EducaMente.Utilities
                 Observacion = perfil.Observacion
             };
         }
+
+        public static ExportarPerfilesDTO MapToExportarHistPerfilDTO(PerfilPsicoHistDTO perfil)
+        {
+
+            return new ExportarPerfilesDTO
+            {
+                NombreUsuario = perfil.NombreUsuario,
+                FechaEvaluacion = perfil.FechaGeneracion,
+                AnsiedadScore = perfil.AnsiedadScore,
+                EstresScore = perfil.EstresScore,
+                MotivacionScore = perfil.MotivacionScore,
+                AutoestimaScore = perfil.AutoestimaScore,
+                PropositoScore = perfil.PropositoScore,
+                NivelRiesgo = perfil.NivelRiesgo,
+                EstadoEmocional = perfil.EstadoEmocional,
+                Observacion = perfil.Observacion
+            };
+        }
+
     }
 }

@@ -70,6 +70,7 @@ builder.Services.AddScoped<I_Usuario, UsuarioRepos>();
 builder.Services.AddScoped<I_PsicoPreguntaBank, PsicoPreguntaBankRepos>();
 builder.Services.AddScoped<I_PsicoTest, PsicoTestRepos>();
 builder.Services.AddScoped<I_CampainRisk, CampaingRiskRepos>();
+builder.Services.AddScoped<I_OTP, OTPRepos>();
 
 builder.Services.AddScoped<I_GeminiService, GeminiService>();
 builder.Services.AddScoped<I_FinalizeTestOrquestador, FinalizeTestOrquestadorService>();

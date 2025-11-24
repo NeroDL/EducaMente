@@ -6,5 +6,6 @@ namespace EducaMente.Interface
     public interface I_ExcelExporterService
     {
         Task<FileStreamResult> ExportarPerfilesAsync();
+        Task<FileStreamResult> ExportarPerfilesHistAsync(string usuarioId);
     }
 }
