@@ -233,8 +233,6 @@ namespace EducaMente.Repositories
             if (url == null || string.IsNullOrEmpty(url.ValorString))
                 throw new InvalidOperationException($"La URL del panel de recuperación de usuario URL.START.TEST no existe.");
 
-            string urltest = $"{url}";
-
             // Obtener plantilla
             var plantilla = await _parametroRepos.GetHtmlByCodigoAsync("EMAIL.CAMPAING.BIENESTAR");
 
@@ -246,7 +244,7 @@ namespace EducaMente.Repositories
             // Reemplazar variables dinámicas
             var contenido = HTML
                 .Replace("#NombreEstudiante#", estudiante.Nombre)
-                .Replace("#URLSolicitud#", urltest);
+                .Replace("#URLSolicitud#", url.ValorString);
 
             var usuarioNotify = new UsuarioNotifyDTO
             {
